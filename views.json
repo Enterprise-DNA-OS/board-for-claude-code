@@ -1,13 +1,41 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Board for Claude Code: what needs attention, rendered by npm run view",
+    "title": "Board secretary week",
+    "subtitle": "Read-only snapshot. Regenerate after changes.",
     "sections": [
       {
-        "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "title": "Meeting preparation",
+        "sql": "select board,title,meeting_date,pack_due,missing_papers from v_pack_readiness where meeting_date>=current_date order by meeting_date"
+      },
+      {
+        "title": "Action chase",
+        "sql": "select board,title,owner,due_date,days_overdue,days_quiet from v_action_chase where days_overdue>0 or days_quiet>=14 order by days_overdue desc"
+      },
+      {
+        "title": "Work plan",
+        "sql": "select b.name as board,w.title,w.due_date from work_plan w join boards b on b.id=w.board_id where w.completed_on is null and w.due_date<=current_date+30 order by w.due_date"
+      }
+    ]
+  },
+  {
+    "name": "compliance",
+    "title": "Governance record checks",
+    "subtitle": "Evidence gaps for review, not a legal certification.",
+    "sections": [
+      {
+        "title": "Findings",
+        "sql": "select b.name as board,v.rule,v.record,v.finding,v.due_date,v.source from v_compliance v join boards b on b.id=v.board_id order by b.name,v.rule"
+      }
+    ]
+  },
+  {
+    "name": "decisions",
+    "title": "Decisions and follow-through",
+    "sections": [
+      {
+        "title": "Decisions",
+        "sql": "select b.name as board,d.title,d.outcome,d.decision_date,(select count(*) from actions a where a.decision_id=d.id) as linked_actions from decisions d join boards b on b.id=d.board_id order by d.decision_date desc"
       }
     ]
   }

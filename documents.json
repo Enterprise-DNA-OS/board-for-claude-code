@@ -1,11 +1,77 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
+    "name": "board-pack",
+    "title": "Board meeting pack",
+    "for_each": "select id,title from meetings where status<>'cancelled'",
+    "file": "title",
+    "sections": [
+      {
+        "title": "Meeting",
+        "sql": "select b.name as board,m.title,m.meeting_date,m.status from meetings m join boards b on b.id=m.board_id where m.id=$1"
+      },
+      {
+        "title": "Agenda",
+        "sql": "select a.position,a.title,a.purpose,m.name as presenter from agenda_items a left join members m on m.id=a.presenter_id where a.meeting_id=$1 order by a.position"
+      },
+      {
+        "title": "Paper summaries and archive references",
+        "note": "Linked source documents remain in your controlled archive. This pack does not merge their contents.",
+        "sql": "select p.title,p.summary,p.source_path,p.received_on from papers p join agenda_items a on a.id=p.agenda_item_id where a.meeting_id=$1 order by a.position,p.title"
+      },
+      {
+        "title": "Open actions for this board",
+        "sql": "select a.title,m.name as owner,a.due_date,a.note from actions a join members m on m.id=a.owner_id where a.board_id=(select board_id from meetings where id=$1) and a.status in ('open','in-progress') order by a.due_date"
+      },
+      {
+        "title": "Current interests",
+        "sql": "select m.name as member,i.title,i.nature,i.extent,i.disclosed_on from interests i join members m on m.id=i.member_id where i.board_id=(select board_id from meetings where id=$1) and i.closed_on is null order by m.name"
+      }
+    ]
+  },
+  {
+    "name": "minutes",
+    "title": "Minute book extract for review",
+    "for_each": "select id,title from minutes",
+    "file": "title",
+    "sections": [
+      {
+        "title": "Recorded minutes",
+        "sql": "select m.title,m.body,m.recorded_on,m.signed_on,s.name as recorded_signer from minutes m left join members s on s.id=m.signer_id where m.id=$1",
+        "note": "A recorded signature date is metadata. This document does not provide an electronic signature service."
+      },
+      {
+        "title": "Attendance",
+        "sql": "select p.name,a.status from attendance a join members p on p.id=a.member_id where a.meeting_id=(select meeting_id from minutes where id=$1) order by p.name"
+      },
+      {
+        "title": "Decisions",
+        "sql": "select title,body,outcome,decision_date from decisions where meeting_id=(select meeting_id from minutes where id=$1) order by title"
+      }
+    ]
+  },
+  {
+    "name": "interests-register",
+    "title": "Interests register",
+    "for_each": "select id,name from boards",
     "file": "name",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Current and historical disclosures",
+        "sql": "select m.name as member,i.title,i.nature,i.extent,i.aware_on,i.disclosed_on,i.closed_on from interests i join members m on m.id=i.member_id where i.board_id=$1 order by m.name,i.aware_on"
+      }
+    ]
+  },
+  {
+    "name": "action-notice",
+    "title": "Action follow-up for review",
+    "for_each": "select id,name from members where active",
+    "file": "name",
+    "sections": [
+      {
+        "title": "Open actions",
+        "sql": "select a.title,a.due_date,a.note,d.body as decision_context from actions a left join decisions d on d.id=a.decision_id where a.owner_id=$1 and a.status in ('open','in-progress') order by a.due_date",
+        "note": "Draft for the secretary. Nothing is sent."
+      }
     ]
   }
 ]

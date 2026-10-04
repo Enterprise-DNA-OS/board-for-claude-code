@@ -1,115 +1,144 @@
-<h1 align="center">Board for Claude Code</h1>
+# Board for Claude Code
 
-<p align="center">
-  <strong>The open-source board meeting and governance system that is just a database and Claude Code.</strong>
-</p>
+Your meeting cycle, decisions, actions and interests in a database you own.
+Built by [Enterprise DNA](https://enterprisedna.co).
 
-<p align="center">
-  Created by <a href="https://www.enterprisedna.co"><strong>Enterprise DNA</strong></a>. Free and open source. Works with Claude Code, Codex, OpenCode or Cursor.
-</p>
+| Do it yourself | We customise it | We run it for you |
+| --- | --- | --- |
+| Free under the MIT licence. Install the database and commands. | Your board rules, fields, document layouts and reviewed BoardPro records. A web front end or another stack when you need one. | Installed, connected and operated through Omni by Enterprise DNA. One setup fee, then a monthly retainer. |
+| [Quick start](#quick-start) | [Get your version built](https://enterprisedna.co/omni/book?offer=replace-software&utm_medium=github&utm_campaign=boardpro) | [Book a call](https://enterprisedna.co/omni/book?offer=replace-software&utm_medium=github&utm_campaign=boardpro) |
 
-<!-- three-doors -->
-<table align="center">
-  <tr>
-    <td align="center"><strong>Do it yourself</strong><br/>Clone it, run it, own it. Free, MIT.<br/><a href="#quick-start">Quick start</a></td>
-    <td align="center"><strong>We customise it</strong><br/>Your fields, your rules, your BoardPro data brought across.<br/><a href="https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=boardpro">Book a call</a></td>
-    <td align="center"><strong>We run it for you</strong><br/>Installed, connected and operated inside Omni. Setup fee, then a retainer.<br/><a href="https://enterprisedna.co/omni/instead-of/boardpro?utm_source=github&utm_medium=readme&utm_campaign=boardpro">How it works</a></td>
-  </tr>
-</table>
+Works with Claude Code, Codex, OpenCode or Cursor. Read [AGENTS.md](AGENTS.md).
 
-<p align="center">
-  <a href="#what-is-this">What is this</a> &bull;
-  <a href="#why-no-front-end">Why no front end</a> &bull;
-  <a href="#quick-start">Quick start</a> &bull;
-  <a href="#the-commands">Commands</a> &bull;
-  <a href="#instead-of-boardpro">Instead of BoardPro</a> &bull;
-  <a href="#want-it-installed-and-run-for-you">Installed for you</a> &bull;
-  <a href="#license">License</a>
-</p>
+## What is here
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Node-20+-339933?style=flat-square" alt="Node 20+" />
-  <img src="https://img.shields.io/badge/PostgreSQL-any-336791?style=flat-square" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/PGlite-embedded-3ecf8e?style=flat-square" alt="PGlite" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License" />
-</p>
+Twelve record types cover boards, members, meetings, agendas, papers, attendance, minutes, decisions, actions, interests, work plans and secretary notes. Three database views drive the meeting cycle, action chase and compliance review. Ten analysis queries join these records. There is no front end or external account requirement.
 
----
+The secretary can prepare an agenda, chase missing papers, record a decision, assign the action and check the outcome at the next meeting. Documents and read-only dashboards carry your business name from `brand.json`.
 
-## What is this
-
-Board for Claude Code does the job you pay BoardPro for, as a Postgres database and a set of agent commands. There is no web front end. You open the folder in [Claude Code](https://claude.com/claude-code) (or Codex, OpenCode, Cursor: see `AGENTS.md`) and ask for what you want in plain language. It runs the right query, and it can answer questions the BoardPro dashboard cannot.
-
-<!-- TODO(author): the annual bill. One sentence: what a 10 to 50 person business typically pays BoardPro per year, all in, with a source. -->
-
-Want the same thing with a web front end, or built on a different stack? That is a customisation, and it is exactly what Enterprise DNA does: [book a call](https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=boardpro).
-
-<!-- TODO(author): two or three sentences on what this specific product covers and who it is for. -->
-
-## Why no front end
-
-- The front end was only ever there because the database was hard to talk to. That is no longer true.
-- Your data sits in plain Postgres tables you own. Any tool can read them. No export, no lock-in.
-- No seats, no tiers, no add-ons. Read [docs/why-no-front-end.md](docs/why-no-front-end.md) for the honest trade-offs too.
+This base is for a trusted secretary or governance team with access to the entire database. Board filters are convenience filters, not access controls. Use separate databases for boards with different confidentiality boundaries. It does not provide individual director logins, electronic signatures, immutable audit records, notifications or mobile annotation. Enterprise DNA scopes those additions with you.
 
 ## Quick start
 
-Sixty seconds, no database install (an embedded Postgres runs inside Node):
+Node 20 or later, on Windows or Linux:
 
 ```bash
 git clone https://github.com/Enterprise-DNA-OS/board-for-claude-code.git
 cd board-for-claude-code
 npm install
+npm test
 npm run demo
 ```
 
-Then open the folder in Claude Code and type a slash command. <!-- TODO(author): name the first command to try. -->
+The demo creates fictional data in `.data/demo` even if a team database is configured. It never seeds the team database. To explore it with other commands, put `DATA_DIR=.data/demo` in a local `.env` file with no `DATABASE_URL`, or set that environment variable for the process. `npm run migrate` and `npm run seed` use your configured database. Run seed only in a demo database. Seed runs are idempotent and preserve any edited demo rows.
 
-### Use it with your own Postgres or Supabase
+```bash
+npm run board -- meeting-cycle
+npm run board -- attention
+npm run board -- insights 10 --json
+npm run view
+npm run docs
+```
 
-Copy `.env.example` to `.env`, set `DATABASE_URL`, then `npm run migrate`. Same commands, shared data, no per-seat fee.
+Open `views/week.html`. Documents go to `docs-out/`. These are static snapshots. Regenerate them after changes. A board pack includes paper summaries and archive paths, not merged PDF attachments.
+
+For real records use a fresh `DATA_DIR` and run `npm run migrate`, without seeding. Add your board and members, then import reviewed data. For shared Postgres set `DATABASE_URL` in the environment or a gitignored `.env`. The same migration runs in Postgres and embedded PGlite. Remote connections verify TLS certificates. Keep credentials and confidential records out of Git.
 
 ## The commands
 
-<!-- TODO(author): a table of the slash commands in .claude/commands and what each one does. -->
+| Command | Job |
+| --- | --- |
+| `/boards` | List the boards and their local rules.. |
+| `/members` | Read director and secretary records.. |
+| `/meetings` | Read the meeting calendar.. |
+| `/agenda` | Read the meeting and its agenda, presenters and papers.. |
+| `/paper-chase` | Find missing papers, then list their owners and deadlines.. |
+| `/meeting-cycle` | Prepare the next meeting cycle. |
+| `/action-chase` | Show overdue and quiet actions. |
+| `/actions` | Read open actions, their owners and latest notes.. |
+| `/decisions` | Read the decision register. |
+| `/interests` | Read current and historical interests. |
+| `/work-plan` | Review the annual work plan and owners.. |
+| `/minutes-review` | Check held meetings for missing minutes and signature metadata.. |
+| `/compliance` | Read docs/compliance.md first. |
+| `/insights` | Answer one or all of the ten cross-record questions from live data.. |
+| `/add` | Read the existing board and referenced records first. |
+| `/update` | Read the full record first. |
+| `/log` | Record the operator's exact note. |
+| `/complete` | Mark an action complete only on the operator's instruction, then report its completion date.. |
+| `/weekly-review` | Write a Monday review from meeting-cycle, attention and compliance. |
+| `/draft-chase` | Read the action, owner and linked decision from the returned data. |
+| `/import` | Read docs/replace-boardpro.md. |
+| `/export` | Export the whole trusted database to a new file. |
+| `/board-pack` | Render the meeting pack with its agenda, paper summaries, archive references, actions and interests. |
+| `/documents` | Render minute extracts, interest registers and action notices. |
+| `/view` | Render read-only snapshots and give the operator the local files. |
+| `/new-view` | Read views.json and the existing database views. |
+| `/customise` | Read the requested change back as fields, rules or stage names. |
 
-| Command | What it does |
-|---|---|
-| `/...` | ... |
+The complete CLI and field dictionary is [docs/cli.md](docs/cli.md). Every direct read supports `--json`. Names match without case sensitivity. Partial ids work. Ambiguous matches list candidates and exit 1. Writes validate relationships within the board. Drafts are local files and never send.
 
-## Instead of boardpro
+## Ten questions to ask across your own records
 
-<!-- TODO(author): how to bring data across from BoardPro; link docs/replace-boardpro.md -->
+These ten answers run today through `npm run board -- insights`. They are custom joins over your records, not a claim that BoardPro can never answer a similar question. Its current product includes document assistance.
 
-## Architecture
+1. Which owners carry overdue work across boards?
+2. Which approved decisions have no follow-up action?
+3. Which upcoming packs are waiting on overdue papers?
+4. Which open actions have been quiet for at least fourteen days?
+5. Which known interests have no disclosure date?
+6. Which held meetings lack a minute record?
+7. Which Australian minutes missed their calendar-month deadline?
+8. Which meetings have fewer recorded attendees than our quorum?
+9. Which work-plan items are overdue or due in the next thirty days?
+10. Which directors own overdue actions and have undisclosed interests?
 
+## Your first hour: ten things to ask for
+
+1. Add our board with its jurisdiction and constitution quorum.
+2. Add the chair, directors and secretary.
+3. Set our board-pack lead time.
+4. Add the next meeting and agenda.
+5. Assign the missing papers to their presenters.
+6. Import our reviewed action list from the archived BoardPro download.
+7. Add our current interests and disclosure dates.
+8. Record the annual work-plan deadlines.
+9. Put our business name and logo on the documents.
+10. Add the one field our secretary always keeps in a separate spreadsheet.
+
+Use `/customise` for new fields or rules and `/new-view` for another read-only report. Changes use new migrations and tests.
+
+## Replace BoardPro
+
+BoardPro's documented downloads are PDFs and individual documents. There is no verified native CSV export in this build. Archive those files, transcribe the records you need to the supplied CSV layouts, and have the secretary check them. After that preparation, the import itself is one command:
+
+```bash
+node scripts/board.mjs import boardpro --kind=actions --board="Harbour Community Services" --file=examples/boardpro/actions.csv --dry-run
+node scripts/board.mjs import boardpro --kind=actions --board="Harbour Community Services" --file=examples/boardpro/actions.csv
 ```
-board-for-claude-code/
-  CLAUDE.md                 how the operator wants this run (routing table + house rules)
-  AGENTS.md                 the same, for Codex / OpenCode / Cursor / Gemini CLI
-  .claude/commands/         the slash commands
-  scripts/                  the CLI the commands drive
-  scripts/lib/db.mjs        one adapter: DATABASE_URL (pg) or embedded PGlite
-  supabase/migrations/      plain SQL schema
-  supabase/seed.sql         demo data
-  docs/                     the thesis and the migration guide
-```
 
-## Built for coding agents
+The example is fictional. Preserve stable External IDs for repeated imports. Meetings, decisions and interests have separate supported layouts. No PDF extraction, attachment transfer or signature migration is claimed. Read [docs/replace-boardpro.md](docs/replace-boardpro.md) before switching. A reviewed transcription takes time, so a complete BoardPro migration is not a one-day guarantee.
 
-The database, CLI and command recipes work with Claude Code, Codex, OpenCode or Cursor. Ask your coding agent for a new command and have it implement and test the change against the same records.
+## Record checks and documents
 
-## Contributing
+`/compliance` flags missing NZ company meeting records and disclosure dates, Australian minute recording deadlines and missing signature metadata, plus your configured quorum. It checks the evidence recorded here, not every legal obligation. [docs/compliance.md](docs/compliance.md) identifies every rule and limit. Other organisation types need their own rules configured. No automatic filing, deletion or certification is included.
 
-Issues and pull requests are welcome. Keep the shape: plain SQL, a small CLI, a slash command per recurring job, no front end.
+`npm run docs` produces board packs, minute extracts, interest registers and action follow-ups. Change `brand.json` once to change their business name, colours and logo. Use an absolute file or HTTPS URL for the logo so nested document paths resolve it. [docs/why-no-front-end.md](docs/why-no-front-end.md) explains the operating limits.
 
-## Want it installed and run for you?
+## Architecture and validation
 
-Enterprise DNA installs Board for Claude Code for your business, migrates your BoardPro data, connects it to the rest of your tools, and runs it for you as part of **Omni**, our managed Command Center. One setup fee, then a monthly retainer.
+- `scripts/board.mjs`: one CLI, data validation, CSV mapping and ten analysis questions.
+- `supabase/migrations/`: portable Postgres migrations, updated timestamps, foreign keys and views.
+- `supabase/seed.sql`: fictional records with overdue actions and missing evidence.
+- `scripts/smoke.mjs`: temporary embedded database, migrations, seed, all reads and writes, imports, rollback, isolation checks, documents and views.
+- `documents.json` and `views.json`: readable report specifications using the shared template renderers.
+- `.claude/commands/`: the operator's recurring jobs, used by every runtime.
+- `.github/workflows/test.yml`: Node 20/22 on Windows and Linux.
 
-- Book a call: [enterprisedna.co/omni/book](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=boardpro)
-- Read more: [enterprisedna.co/omni/instead-of/boardpro](https://enterprisedna.co/omni/instead-of/boardpro?utm_source=github&utm_medium=readme&utm_campaign=boardpro)
+`npm test` never connects to your configured database. It creates and removes a temporary embedded database. To back up, export records to a new file and back up original source documents separately. The JSON export is an open backup format, not an automatic restore service. Test any recovery procedure before relying on it.
 
-## License
+## Ownership
 
-MIT. Copyright (c) 2026 Enterprise DNA.
+MIT licence. No BoardPro affiliation. Database hosting and coding-agent subscriptions, if used, are separate costs. Enterprise DNA installs and operates your custom version through Omni by Enterprise DNA for one setup fee and then a retainer.
+
+[Talk to Sam for 30 minutes](https://enterprisedna.co/omni/book?offer=replace-software&utm_medium=github&utm_campaign=boardpro).
