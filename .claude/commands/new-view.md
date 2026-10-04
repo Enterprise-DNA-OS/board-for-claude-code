@@ -1,3 +1,7 @@
+---
+description: "Read views.json and the existing database views"
+---
+
 # /new-view
 
 Read views.json and the existing database views. Add a read-only SELECT to views.json or a new SQL view in a numbered migration. Never run user-supplied SQL from a web request. Test and render the added view.

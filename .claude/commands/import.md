@@ -1,3 +1,7 @@
+---
+description: "Read docs/replace-boardpro.md"
+---
+
 # /import
 
 Read docs/replace-boardpro.md. BoardPro downloads PDFs. The secretary must review a CSV transcription and archive the originals first. Check the dry run, counts, owners and dates before the instructed import.

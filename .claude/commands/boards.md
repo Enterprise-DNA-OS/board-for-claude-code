@@ -1,3 +1,7 @@
+---
+description: "List the boards and their local rules."
+---
+
 # /boards
 
 List the boards and their local rules.

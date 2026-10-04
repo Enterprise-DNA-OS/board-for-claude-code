@@ -1,3 +1,7 @@
+---
+description: "Read current and historical interests"
+---
+
 # /interests
 
 Read current and historical interests. Flag missing disclosure dates, without deciding whether a conflict legally exists.

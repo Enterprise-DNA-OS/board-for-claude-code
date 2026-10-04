@@ -1,3 +1,7 @@
+---
+description: "Check held meetings for missing minutes and signature metadata."
+---
+
 # /minutes-review
 
 Check held meetings for missing minutes and signature metadata.

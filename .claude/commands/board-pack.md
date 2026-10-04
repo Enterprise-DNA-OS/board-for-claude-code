@@ -1,3 +1,7 @@
+---
+description: "Render the meeting pack with its agenda, paper summaries, archive references, actions and interests"
+---
+
 # /board-pack
 
 Render the meeting pack with its agenda, paper summaries, archive references, actions and interests. This does not merge original PDFs.

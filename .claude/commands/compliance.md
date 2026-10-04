@@ -1,3 +1,7 @@
+---
+description: "Read docs/compliance.md first"
+---
+
 # /compliance
 
 Read docs/compliance.md first. Separate source-backed record checks from constitution policy. Report each finding with its source. No findings means only that these checks found none.

@@ -1,3 +1,7 @@
+---
+description: "Read the meeting calendar."
+---
+
 # /meetings
 
 Read the meeting calendar.

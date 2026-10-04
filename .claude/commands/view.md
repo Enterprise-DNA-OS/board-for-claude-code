@@ -1,3 +1,7 @@
+---
+description: "Render read-only snapshots and give the operator the local files"
+---
+
 # /view
 
 Render read-only snapshots and give the operator the local files. Regenerate after any change.

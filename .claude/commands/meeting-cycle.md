@@ -1,3 +1,7 @@
+---
+description: "Prepare the next meeting cycle"
+---
+
 # /meeting-cycle
 
 Prepare the next meeting cycle. Highlight missing agenda items and papers and pack deadlines.

@@ -1,3 +1,7 @@
+---
+description: "Read the meeting and its agenda, presenters and papers."
+---
+
 # /agenda
 
 Read the meeting and its agenda, presenters and papers.

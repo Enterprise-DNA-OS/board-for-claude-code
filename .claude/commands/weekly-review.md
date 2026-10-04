@@ -1,3 +1,7 @@
+---
+description: "Write a Monday review from meeting-cycle, attention and compliance"
+---
+
 # /weekly-review
 
 Write a Monday review from meeting-cycle, attention and compliance. The CLI runs all three and saves a dated review in drafts/. Read it, then give the secretary the priorities.

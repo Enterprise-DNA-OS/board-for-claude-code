@@ -1,3 +1,7 @@
+---
+description: "Answer one or all of the ten cross-record questions from live data."
+---
+
 # /insights
 
 Answer one or all of the ten cross-record questions from live data.

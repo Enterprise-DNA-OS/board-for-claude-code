@@ -1,3 +1,7 @@
+---
+description: "Find missing papers, then list their owners and deadlines."
+---
+
 # /paper-chase
 
 Find missing papers, then list their owners and deadlines.

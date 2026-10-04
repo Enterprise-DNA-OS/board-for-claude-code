@@ -1,3 +1,7 @@
+---
+description: "Mark an action complete only on the operator's instruction, then report its completion date."
+---
+
 # /complete
 
 Mark an action complete only on the operator's instruction, then report its completion date.

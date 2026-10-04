@@ -1,3 +1,7 @@
+---
+description: "Read director and secretary records."
+---
+
 # /members
 
 Read director and secretary records.

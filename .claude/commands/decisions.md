@@ -1,3 +1,7 @@
+---
+description: "Read the decision register"
+---
+
 # /decisions
 
 Read the decision register. Do not infer an approval from discussion.

@@ -1,3 +1,7 @@
+---
+description: "Export the whole trusted database to a new file"
+---
+
 # /export
 
 Export the whole trusted database to a new file. Back up referenced source documents separately.

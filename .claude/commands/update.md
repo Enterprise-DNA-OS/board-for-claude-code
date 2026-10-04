@@ -1,3 +1,7 @@
+---
+description: "Read the full record first"
+---
+
 # /update
 
 Read the full record first. Show the proposed field changes, use the operator's instruction as authority, and keep historical interests by closing them.

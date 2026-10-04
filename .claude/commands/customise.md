@@ -1,3 +1,7 @@
+---
+description: "Read the requested change back as fields, rules or stage names"
+---
+
 # /customise
 
 Read the requested change back as fields, rules or stage names. Write a new numbered migration without editing applied migrations. Update the CLI whitelist, documentation and tests if needed. Back up records first. Apply the change, exercise it on demo data, and run tests. Do not delete records or widen access.

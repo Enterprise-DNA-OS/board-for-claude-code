@@ -1,3 +1,7 @@
+---
+description: "Record the operator's exact note"
+---
+
 # /log
 
 Record the operator's exact note. Correct spelling only.

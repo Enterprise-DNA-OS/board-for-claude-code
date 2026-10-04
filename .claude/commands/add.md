@@ -1,3 +1,7 @@
+---
+description: "Read the existing board and referenced records first"
+---
+
 # /add
 
 Read the existing board and referenced records first. Use only facts supplied by the operator. Use the field dictionary in docs/cli.md.

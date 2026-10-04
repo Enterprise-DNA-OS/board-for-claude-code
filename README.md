@@ -133,9 +133,9 @@ The example is fictional. Preserve stable External IDs for repeated imports. Mee
 - `scripts/smoke.mjs`: temporary embedded database, migrations, seed, all reads and writes, imports, rollback, isolation checks, documents and views.
 - `documents.json` and `views.json`: readable report specifications using the shared template renderers.
 - `.claude/commands/`: the operator's recurring jobs, used by every runtime.
-- `.github/workflows/test.yml`: Node 20/22 on Windows and Linux.
+- `.github/workflows/test.yml`: Node 20/22 on Windows and Linux, plus the same suite against a fresh Postgres 16 test schema.
 
-`npm test` never connects to your configured database. It creates and removes a temporary embedded database. To back up, export records to a new file and back up original source documents separately. The JSON export is an open backup format, not an automatic restore service. Test any recovery procedure before relying on it.
+`npm test` ignores your configured production database. An explicit `BOARD_TEST_POSTGRES_URL` enables the isolated Postgres test schema used in CI. It creates and removes a temporary embedded database. To back up, export records to a new file and back up original source documents separately. The JSON export is an open backup format, not an automatic restore service. Test any recovery procedure before relying on it.
 
 ## Ownership
 

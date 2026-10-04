@@ -1,3 +1,7 @@
+---
+description: "Read the action, owner and linked decision from the returned data"
+---
+
 # /draft-chase
 
 Read the action, owner and linked decision from the returned data. Review the local draft, keep the recorded deadline, and never send.

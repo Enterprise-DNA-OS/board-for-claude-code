@@ -1,3 +1,7 @@
+---
+description: "Read open actions, their owners and latest notes."
+---
+
 # /actions
 
 Read open actions, their owners and latest notes.

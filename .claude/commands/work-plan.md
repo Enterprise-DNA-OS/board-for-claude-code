@@ -1,3 +1,7 @@
+---
+description: "Review the annual work plan and owners."
+---
+
 # /work-plan
 
 Review the annual work plan and owners.
